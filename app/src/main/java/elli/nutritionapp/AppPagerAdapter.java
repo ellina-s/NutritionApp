@@ -31,4 +31,16 @@ public class AppPagerAdapter extends FragmentPagerAdapter {
     public int getCount(){
         return TABS_COUNT;
     }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0:
+                return "Diary";
+            case 1:
+                return "Stats";
+            default:
+                return "Diary";
+        }
+    }
 }
