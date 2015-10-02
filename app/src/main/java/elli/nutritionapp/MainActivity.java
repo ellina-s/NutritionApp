@@ -10,8 +10,9 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
-    private static final int TABS_COUNT = 3;
+    private static final int TABS_COUNT = 2;
     private ViewPager mViewPager;
+    private AppPagerAdapter mPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,9 +21,11 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
         final ActionBar actionBar = getActionBar();
         mViewPager = (ViewPager) findViewById(R.id.pager);
+        mPagerAdapter = new AppPagerAdapter(getSupportFragmentManager());
 
         // Enable tabs to be displayed in the action bar
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        mViewPager.setAdapter(mPagerAdapter);
 
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
