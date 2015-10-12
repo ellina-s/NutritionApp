@@ -8,6 +8,108 @@
         android:layout_height="wrap_content"
         android:text="@string/sample_text1"
         android:id="@+id/textView1"
-        android:layout_centerVertical="true"
+        android:layout_marginBottom="70dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/vegTitle"
+        android:id="@+id/vegTextView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="34dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="45dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/grainsTitle"
+        android:id="@+id/grainsTextView"
+        android:layout_below="@+id/vegTextView"
+        android:layout_alignLeft="@+id/vegTextView"
+        android:layout_alignStart="@+id/vegTextView"
+        android:layout_marginTop="45dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/milkTitle"
+        android:id="@+id/milkTextView"
+        android:layout_marginTop="45dp"
+        android:layout_below="@+id/grainsTextView"
+        android:layout_alignLeft="@+id/grainsTextView"
+        android:layout_alignStart="@+id/grainsTextView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/meatTitle"
+        android:id="@+id/meatTextView"
+        android:layout_below="@+id/milkTextView"
+        android:layout_alignLeft="@+id/milkTextView"
+        android:layout_alignStart="@+id/milkTextView"
+        android:layout_marginTop="45dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/vegEditText"
+        android:layout_alignBottom="@+id/vegTextView"
+        android:layout_toRightOf="@+id/textView1"
+        android:layout_toEndOf="@+id/textView1"
+        android:maxLength="5" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/grainsEditText"
+        android:layout_above="@+id/milkTextView"
+        android:layout_alignLeft="@+id/vegEditText"
+        android:layout_alignStart="@+id/vegEditText"
+        android:maxLength="5" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/milkEditText"
+        android:layout_alignBottom="@+id/milkTextView"
+        android:layout_alignLeft="@+id/grainsEditText"
+        android:layout_alignStart="@+id/grainsEditText"
+        android:maxLength="5" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/meatEditText"
+        android:layout_alignBottom="@+id/meatTextView"
+        android:layout_alignLeft="@+id/milkEditText"
+        android:layout_alignStart="@+id/milkEditText"
+        android:maxLength="5"
+        android:linksClickable="false" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/addButtonTitle"
+        android:id="@+id/addButton"
+        android:layout_above="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp" />
+
 </RelativeLayout>

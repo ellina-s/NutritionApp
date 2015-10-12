@@ -3,4 +3,9 @@
     <string name="sample_text1">You are in the Diary Tab.</string>
     <string name="sample_text2">You are in the Stats Tab.</string>
     <string name="action_settings">Settings</string>
+    <string name="vegTitle">Vegetables and Fruit</string>
+    <string name="grainsTitle">Grains</string>
+    <string name="milkTitle">Milk and Alternatives</string>
+    <string name="meatTitle">Meat and Alternatives</string>
+    <string name="addButtonTitle">Add</string>
 </resources>
