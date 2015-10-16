@@ -23,7 +23,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginLeft="34dp"
         android:layout_marginStart="34dp"
-        android:layout_marginTop="45dp" />
+        android:layout_marginTop="70dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -147,5 +147,17 @@
         android:layout_alignTop="@+id/meatProgressBar"
         android:layout_alignLeft="@+id/outOfTextView3"
         android:layout_alignStart="@+id/outOfTextView3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/datePickTitle"
+        android:id="@+id/datePickTextView"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/vegTextView"
+        android:layout_alignStart="@+id/vegTextView"
+        android:textSize="18sp"
+        android:layout_marginTop="20dp" />
 
 </RelativeLayout>
