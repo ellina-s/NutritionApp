@@ -1,6 +1,8 @@
 package elli.nutritionapp;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -38,6 +40,8 @@ public class NutritionDbHelper {
                     + KEY_DATE + " integer);";
 
     private final Context mContext;
+    private AppDbHelper mAppDbHelper;
+    private SQLiteDatabase mDatabase;
 
     /**
      * An implementation of the SQLiteOpenHelper class
@@ -66,6 +70,42 @@ public class NutritionDbHelper {
      */
     public NutritionDbHelper(Context context){
         this.mContext = context;
+    }
+
+    /**
+     * Creates and opens a database.
+     */
+    public NutritionDbHelper open() throws SQLException {
+        mAppDbHelper = new AppDbHelper(mContext);
+        mDatabase = mAppDbHelper.getWritableDatabase();
+        return this;
+    }
+
+    /**
+     * Closes the database.
+     */
+    public void close() {
+        mAppDbHelper.close();
+    }
+
+    /**
+     * Creates a new record of daily servings of each of the food groups.
+     * @param veg number of servings of vegetables and fruit
+     * @param grain number of servings of grains
+     * @param milk number of servings of milk and alternatives
+     * @param meat number of servings of meat and alternatives
+     * @param date date on which food servings are consumed
+     * @return row Id or -1 if failed
+     */
+    public long createRecord(int veg, int grain, int milk, int meat, int date) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_VEG, veg);
+        initialValues.put(KEY_GRAIN, grain);
+        initialValues.put(KEY_MILK, milk);
+        initialValues.put(KEY_MEAT, meat );
+        initialValues.put(KEY_DATE, date );
+
+        return mDatabase.insert(DATABASE_TABLE, null, initialValues);
     }
 
 }
