@@ -2,6 +2,7 @@ package elli.nutritionapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -102,10 +103,48 @@ public class NutritionDbHelper {
         initialValues.put(KEY_VEG, veg);
         initialValues.put(KEY_GRAIN, grain);
         initialValues.put(KEY_MILK, milk);
-        initialValues.put(KEY_MEAT, meat );
-        initialValues.put(KEY_DATE, date );
+        initialValues.put(KEY_MEAT, meat);
+        initialValues.put(KEY_DATE, date);
 
         return mDatabase.insert(DATABASE_TABLE, null, initialValues);
+    }
+
+    /**
+     * Fetches a record containing the information on food servings
+     * given a particular row ID.
+     * @param rowId ID of a record to be fetched
+     * @return a Cursor that points to the fetched item
+     * @throws SQLException
+     */
+    public Cursor fetchRecord(long rowId) throws SQLException {
+
+        Cursor mCursor =
+                mDatabase.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
+                                KEY_VEG, KEY_GRAIN, KEY_MILK, KEY_MEAT, KEY_DATE}, KEY_ROWID + "=" + rowId, null,
+                        null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+    /**
+     * Update a particular record of food servings given a row ID
+     * @param rowId a row ID of the record to be updated
+     * @param veg a new number of servings of vegetables and fruit
+     * @param grain a new number of servings of grains
+     * @param milk a new number of servings of milk and alternatives
+     * @param meat a new number of servings of meat and alternatives
+     * @return True if the note was successfully updated. Otherwise, False
+     */
+    public boolean updateRecord(long rowId, int veg, int grain, int milk, int meat) {
+        ContentValues newValues = new ContentValues();
+        newValues.put(KEY_VEG, veg);
+        newValues.put(KEY_GRAIN, grain);
+        newValues.put(KEY_MILK, milk);
+        newValues.put(KEY_MEAT, meat );
+
+        return mDatabase.update(DATABASE_TABLE, newValues, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
 }
