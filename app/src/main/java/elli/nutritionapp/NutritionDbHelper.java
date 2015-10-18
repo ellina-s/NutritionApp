@@ -1,6 +1,8 @@
 package elli.nutritionapp;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 /**
  * Database helper class. Creates a database and respective table(s)
@@ -27,7 +29,36 @@ public class NutritionDbHelper {
     public static final String KEY_MEAT = "meat";
     public static final String KEY_DATE = "date";
 
+    private static final String DATABASE_CREATE =
+            "create table servings (_id integer primary key autoincrement, "
+                    + KEY_VEG + " integer, "
+                    + KEY_GRAIN + " integer, "
+                    + KEY_MILK + " integer, "
+                    + KEY_MEAT + " integer, "
+                    + KEY_DATE + " integer);";
+
     private final Context mContext;
+
+    /**
+     * An implementation of the SQLiteOpenHelper class
+     * for creating and upgrading a database.
+     */
+    private static class AppDbHelper extends SQLiteOpenHelper {
+
+        AppDbHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            db.execSQL(DATABASE_CREATE);
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            onCreate(db);
+        }
+    }
 
     /**
      * Constructor
