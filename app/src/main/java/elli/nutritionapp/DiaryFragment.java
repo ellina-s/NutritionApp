@@ -1,5 +1,7 @@
 package elli.nutritionapp;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.widget.Button;
 public class DiaryFragment extends Fragment {
 
     private static final String TAG = "Diary";
+    private NutritionDbHelper mDbHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,5 +34,27 @@ public class DiaryFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    /**
+     * Overrides onAttach(Context context) to access the Activity
+     * which is needed to create and open a database.
+     * Reference #1:  http://stackoverflow.com/questions/32083053/android-fragment-onattach-deprecated
+     * Reference #2: https://code.google.com/p/android/issues/detail?id=183358#c11
+     * @param context
+     */
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(TAG, "called onAttach (Context  context)");
+
+        // Check if context is an instance of Activity.
+        // If true, then cast it to Activity.
+        Activity activity;
+        if(context instanceof Activity){
+            activity = (Activity) context;
+            mDbHelper = new NutritionDbHelper(activity);
+            mDbHelper.open();
+        }
     }
 }
