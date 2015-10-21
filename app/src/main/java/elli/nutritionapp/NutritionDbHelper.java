@@ -147,4 +147,12 @@ public class NutritionDbHelper {
         return mDatabase.update(DATABASE_TABLE, newValues, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
+    /**
+     * Fetch all records from the Servings table.
+     * @return A cursor over all records in the Servings table.
+     */
+    public Cursor fetchAllServingsRecords(){
+        return mDatabase.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_VEG, KEY_GRAIN, KEY_MILK, KEY_MEAT, KEY_DATE}, null, null, null, null, null);
+    }
+
 }

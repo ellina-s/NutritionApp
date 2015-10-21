@@ -2,6 +2,7 @@ package elli.nutritionapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import java.util.Random;
 
 /**
  * Created by Ellina on 02-Oct-15.
@@ -30,6 +33,8 @@ public class DiaryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "User clicked the Add button");
+                mockAddNewRecord();
+                mockDisplayRecord();
             }
         });
 
@@ -57,4 +62,42 @@ public class DiaryFragment extends Fragment {
             mDbHelper.open();
         }
     }
+    /**
+     * A mock method to add a mock record to the database.
+     */
+    private void mockAddNewRecord(){
+
+        Log.d(TAG, "called mockAddNewRecord()");
+
+        // Generate a pseudorandom date
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(3112) + 1;
+        int randomDate = randomNumber*10000 + 2015;
+        Log.d(TAG, "random date is " + randomDate);
+        
+        mDbHelper.createRecord(5, 6, 1, 2, randomDate);
+    }
+
+    /**
+     * A mock method to display the records of food servings in the Log.
+     * Displays records that were created by pressing the Add button.
+     *
+     * Reference: http://stackoverflow.com/questions/2810615/how-to-retrieve-data-from-cursor-class
+     */
+    public void mockDisplayRecord(){
+        Log.d(TAG, "called mockDisplayRecord()");
+
+        Cursor cursor = mDbHelper.fetchAllServingsRecords();
+        cursor.moveToFirst();
+        if(cursor != null){
+            while(!cursor.isAfterLast()){
+                int count = cursor.getColumnCount();
+                for (int i = 0; i < count; i++) {
+                    Log.i(TAG, "" + cursor.getString(i));
+                }
+                cursor.moveToNext();
+            }
+        }
+    }
+
 }
