@@ -175,4 +175,23 @@ public class NutritionDbHelper {
         return cursor;
     }
 
+    /**
+     * Fetches a record with the maximum row id, i.e. the most recently created record.
+     * Reference: http://stackoverflow.com/questions/390534/aggregate-functions-in-where-clause-in-sqlite
+     *
+     * @return A cursor on the fetched record.
+     */
+    public Cursor fetchRecordWithMaxRowId(){
+
+        Cursor cursor = mDatabase.rawQuery(
+                "Select " + KEY_ROWID + ", " + KEY_VEG + ", " + KEY_GRAIN + ", " + KEY_MILK +
+                        ", " + KEY_MEAT + ", (strftime('%s', date) * 1000) AS " + KEY_DATE + " FROM " + DATABASE_TABLE +
+                        " where _id = (select max(_id) from " + DATABASE_TABLE + ")", new String[0]);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
+    }
+
 }

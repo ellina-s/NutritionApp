@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import java.util.Date;
+
 /**
  * Created by Ellina on 02-Oct-15.
  */
@@ -53,6 +55,7 @@ public class StatsFragment extends Fragment {
         mockStatsDisplayInLog();
         mockRetrieveProgressValues();
         setProgressBars();
+        mockDisplayMostRecentRecordByID();
 
         return rootView;
     }
@@ -166,5 +169,21 @@ public class StatsFragment extends Fragment {
         mProgressGrains.setProgress(mockProgressStatusGrains);
         mProgressMilk.setProgress(mockProgressStatusMilk);
         mProgressMeat.setProgress(mockProgressStatusMeat);
+    }
+
+    /**
+     * Display the most recent record by ID in the Log.
+     */
+    public void mockDisplayMostRecentRecordByID(){
+        Log.d(TAG, "called mockDisplayMaxIdRecord()");
+
+        Cursor cursor = mDbStatsHelper.fetchRecordWithMaxRowId();
+        int id = cursor.getInt(cursor.getColumnIndex(NutritionDbHelper.KEY_ROWID));
+        Log.d(TAG, "Max ID is " + id);
+
+        long millis = cursor.getLong(cursor.getColumnIndexOrThrow(NutritionDbHelper.KEY_DATE));
+        Log.d(TAG, "Max ID Record's date as TIMESTAMP in LONG is " + millis);
+        Date dateCreated = new Date(millis);
+        Log.d(TAG, "Max ID Record's date as TIMESTAMP is " + dateCreated.toString());
     }
 }
