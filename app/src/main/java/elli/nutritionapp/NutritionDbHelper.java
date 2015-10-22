@@ -21,7 +21,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class NutritionDbHelper {
 
     private static final String DATABASE_NAME = "nutritiondata";
-    private static final String DATABASE_TABLE = "servings";
+    private static final String DATABASE_TABLE = "recordservings";
     private static final int DATABASE_VERSION = 1;
 
     // Fields of the Servings table
@@ -38,7 +38,7 @@ public class NutritionDbHelper {
                     + KEY_GRAIN + " integer, "
                     + KEY_MILK + " integer, "
                     + KEY_MEAT + " integer, "
-                    + KEY_DATE + " integer);";
+                    + KEY_DATE + " DATE DEFAULT CURRENT_DATE);";
 
     private final Context mContext;
     private AppDbHelper mAppDbHelper;
@@ -61,6 +61,7 @@ public class NutritionDbHelper {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            db.execSQL("DROP TABLE IF EXISTS recordservings");
             onCreate(db);
         }
     }
@@ -153,6 +154,25 @@ public class NutritionDbHelper {
      */
     public Cursor fetchAllServingsRecords(){
         return mDatabase.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_VEG, KEY_GRAIN, KEY_MILK, KEY_MEAT, KEY_DATE}, null, null, null, null, null);
+    }
+
+    /**
+     * Fetch the last (i.e. most recent) record in the Servings table.
+     *
+     * Reference: https://androidcookbook.com/Recipe.seam?recipeId=413
+     *
+     * @return A cursor to the retrieved record
+     */
+    public Cursor fetchSecondsSinceEpochDateAtId(int id){
+        Cursor cursor = mDatabase.rawQuery(
+                "SELECT " + KEY_ROWID +
+                        ", (strftime('%s', date) * 1000) AS " + KEY_DATE + ", " +
+                        KEY_VEG + ", " + KEY_GRAIN + ", " + KEY_MILK + ", " +KEY_MEAT +
+                        " FROM " + DATABASE_TABLE + " where _id = " + id, new String[0]);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        return cursor;
     }
 
 }
