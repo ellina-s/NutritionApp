@@ -29,6 +29,10 @@ public class StatsFragment extends Fragment {
 
     private NutritionDbHelper mDbStatsHelper;
     private static final String TAG = "Stats";
+    private static final int MAX_VEG_SERVINGS = 6;
+    private static final int MAX_GRAINS_SERVINGS = 6;
+    private static final int MAX_MILK_SERVINGS = 2;
+    private static final int MAX_MEAT_SERVINGS = 2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +51,8 @@ public class StatsFragment extends Fragment {
         mProgressMeat.setProgress(mockProgressStatusMeat);
 
         mockStatsDisplayInLog();
+        mockRetrieveProgressValues();
+        setProgressBars();
 
         return rootView;
     }
@@ -91,5 +97,74 @@ public class StatsFragment extends Fragment {
                 cursor.moveToNext();
             }
         }
+    }
+
+    /**
+     * A mock method to retrieve progress bar values from the database
+     * for the first record in the database.
+     */
+    public void mockRetrieveProgressValues(){
+        Log.d(TAG, "called mockRetrieveProgressValues()");
+
+        int recordsCount = 1;
+        int id, veg, grains, milk, meat;
+
+        Cursor cursor = mDbStatsHelper.fetchAllServingsRecords();
+        cursor.moveToFirst();
+        if(cursor != null){
+            while(!cursor.isAfterLast()){
+                if(recordsCount == 1){
+                    id = cursor.getInt(cursor.getColumnIndex(NutritionDbHelper.KEY_ROWID));
+                    Log.d(TAG, "Record's id: " + id);
+                    veg = cursor.getInt(cursor.getColumnIndex(NutritionDbHelper.KEY_VEG));
+                    grains = cursor.getInt(cursor.getColumnIndex(NutritionDbHelper.KEY_GRAIN));
+                    milk = cursor.getInt(cursor.getColumnIndex(NutritionDbHelper.KEY_MILK));
+                    meat = cursor.getInt(cursor.getColumnIndex(NutritionDbHelper.KEY_MEAT));
+                    mockSetProgressValues(veg, grains, milk, meat);
+                }
+                cursor.moveToNext();
+                recordsCount++;
+            }
+        }
+    }
+
+    /**
+     * Set mock progress bars values by computing the percentage of
+     * recommended daily number of serving for each food group
+     * (defined by the MAX_..._SERVINGS constants)
+     *
+     * Reference: http://stackoverflow.com/questions/343584/how-do-i-get-whole-and-fractional-parts-from-double-in-jsp-java
+     *
+     * @param veg number of consumed servings of vegetables and fruit
+     * @param grains number of consumed servings of grains
+     * @param milk number of consumed servings of milk
+     * @param meat number of consumed servings of meat
+     */
+    private void mockSetProgressValues(int veg, int grains, int milk, int meat){
+        Log.d(TAG, "Called mockSetProgressValues()");
+
+        double vegPercent = (double) veg / MAX_VEG_SERVINGS * 100;
+        double grainsPercent = (double) grains / MAX_GRAINS_SERVINGS * 100;
+        double milkPercent = (double) milk / MAX_MILK_SERVINGS * 100;
+        double meatPercent = (double) meat / MAX_MEAT_SERVINGS * 100;
+
+        Log.d(TAG, "Double percentages: veg " + vegPercent + " grains " + grainsPercent + " milk " + milkPercent + " meat "+ meatPercent);
+
+        this.mockProgressStatusVeg = (int) vegPercent; // take the integer part of the percentage
+        this.mockProgressStatusGrains = (int) grainsPercent;
+        this.mockProgressStatusMilk = (int) milkPercent;
+        this.mockProgressStatusMeat = (int) meatPercent;
+    }
+
+    /**
+     * Set values of all progress bars.
+     */
+    public void setProgressBars(){
+        Log.d(TAG, "Called setProgressBars()");
+
+        mProgressVeg.setProgress(mockProgressStatusVeg);
+        mProgressGrains.setProgress(mockProgressStatusGrains);
+        mProgressMilk.setProgress(mockProgressStatusMilk);
+        mProgressMeat.setProgress(mockProgressStatusMeat);
     }
 }
