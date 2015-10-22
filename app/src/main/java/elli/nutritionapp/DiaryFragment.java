@@ -71,10 +71,11 @@ public class DiaryFragment extends Fragment {
 
         // Generate a pseudorandom date
         Random rand = new Random();
-        int randomNumber = rand.nextInt(3112) + 1;
-        int randomDate = randomNumber*10000 + 2015;
+        int randomDay = rand.nextInt(31) + 1;
+        int randomMonth = rand.nextInt(12) + 1;
+        int randomDate = randomMonth*1000000 + randomDay*10000 + 2015;
         Log.d(TAG, "random date is " + randomDate);
-        
+
         mDbHelper.createRecord(5, 6, 1, 2, randomDate);
     }
 
