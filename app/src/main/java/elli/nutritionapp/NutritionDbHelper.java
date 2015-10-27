@@ -21,7 +21,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class NutritionDbHelper {
 
     private static final String DATABASE_NAME = "nutritiondata";
-    private static final String DATABASE_TABLE = "recordservings";
+    private static final String DATABASE_TABLE = "servings";
     private static final int DATABASE_VERSION = 1;
 
     // Fields of the Servings table
@@ -61,7 +61,7 @@ public class NutritionDbHelper {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS recordservings");
+            db.execSQL("DROP TABLE IF EXISTS servings");
             onCreate(db);
         }
     }
@@ -157,13 +157,14 @@ public class NutritionDbHelper {
     }
 
     /**
-     * Fetch the last (i.e. most recent) record in the Servings table.
-     *
+     * A mock method to fetch the most recent mock record by time in the Servings table.
+     * Assumes that the most recent record is given by id.
+     * Retrieves timestamp in seconds since epoch (see the reference).
      * Reference: https://androidcookbook.com/Recipe.seam?recipeId=413
-     *
+     * @param id row ID of a mock record to be retrieved
      * @return A cursor to the retrieved record
      */
-    public Cursor fetchSecondsSinceEpochDateAtId(int id){
+    public Cursor mockFetchMostRecentRecordByTimeAtId(int id){
         Cursor cursor = mDatabase.rawQuery(
                 "SELECT " + KEY_ROWID +
                         ", (strftime('%s', date) * 1000) AS " + KEY_DATE + ", " +

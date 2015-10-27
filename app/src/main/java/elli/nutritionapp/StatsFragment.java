@@ -186,4 +186,29 @@ public class StatsFragment extends Fragment {
         Date dateCreated = new Date(millis);
         Log.d(TAG, "Max ID Record's date as TIMESTAMP is " + dateCreated.toString());
     }
+
+    /**
+     * A mock method to display the most recent record by timestamp.
+     * Reference for use of strftime() SQLite's function: https://androidcookbook.com/Recipe.seam?recipeId=413
+     */
+    public void mockDisplayMostRecentRecordByTime() {
+        Log.d(TAG, "called mockDisplayMostRecentRecordByTime()");
+
+        Cursor cursor = mDbStatsHelper.mockFetchMostRecentRecordByTimeAtId(MOCK_TIMESTAMP_ROWID);
+        int id = cursor.getInt(cursor.getColumnIndex(NutritionDbHelper.KEY_ROWID));
+        Log.d(TAG, "Record's id: " + id);
+
+        int veg = cursor.getInt(cursor.getColumnIndex(NutritionDbHelper.KEY_VEG));
+        int grains = cursor.getInt(cursor.getColumnIndex(NutritionDbHelper.KEY_GRAIN));
+        int milk = cursor.getInt(cursor.getColumnIndex(NutritionDbHelper.KEY_MILK));
+        int meat = cursor.getInt(cursor.getColumnIndex(NutritionDbHelper.KEY_MEAT));
+
+        String record = "Veggies: " + veg + " Grains: " + grains + " Milk: " + milk + " Meat: " + meat;
+        Log.d(TAG, record);
+
+        long millis = cursor.getLong(cursor.getColumnIndexOrThrow(NutritionDbHelper.KEY_DATE));
+        Log.d(TAG, "Record's date as time since epoch: " + millis);
+        Date dateCreated = new Date(millis);
+        Log.d(TAG, "Record's date: " + dateCreated.toString());
+    }
 }
