@@ -18,10 +18,10 @@ import java.util.Date;
  */
 public class StatsFragment extends Fragment {
 
-    private ProgressBar mProgressVeg;
-    private ProgressBar mProgressGrains;
-    private ProgressBar mProgressMilk;
-    private ProgressBar mProgressMeat;
+    private ProgressBar mProgressBarVeg;
+    private ProgressBar mProgressBarGrains;
+    private ProgressBar mProgressBarMilk;
+    private ProgressBar mProgressBarMeat;
 
     private int mProgressStatusVeg = 0;
     private int mProgressStatusGrains = 0;
@@ -48,21 +48,17 @@ public class StatsFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_stats, container, false);
 
-        mProgressVeg = (ProgressBar) rootView.findViewById(R.id.vegProgressBar);
-        mProgressGrains = (ProgressBar) rootView.findViewById(R.id.grainsProgressBar);
-        mProgressMilk = (ProgressBar) rootView.findViewById(R.id.milkProgressBar);
-        mProgressMeat = (ProgressBar) rootView.findViewById(R.id.meatProgressBar);
+        mProgressBarVeg = (ProgressBar) rootView.findViewById(R.id.vegProgressBar);
+        mProgressBarGrains = (ProgressBar) rootView.findViewById(R.id.grainsProgressBar);
+        mProgressBarMilk = (ProgressBar) rootView.findViewById(R.id.milkProgressBar);
+        mProgressBarMeat = (ProgressBar) rootView.findViewById(R.id.meatProgressBar);
 
-        mProgressVeg.setProgress(mockProgressStatusVeg);
-        mProgressGrains.setProgress(mockProgressStatusGrains);
-        mProgressMilk.setProgress(mockProgressStatusMilk);
-        mProgressMeat.setProgress(mockProgressStatusMeat);
+        mProgressBarVeg.setProgress(mProgressStatusVeg);
+        mProgressBarGrains.setProgress(mProgressStatusGrains);
+        mProgressBarMilk.setProgress(mProgressStatusMilk);
+        mProgressBarMeat.setProgress(mProgressStatusMeat);
 
         mockStatsDisplayInLog();
-        mockRetrieveProgressValues();
-        mockSetProgressBars();
-        mockDisplayMostRecentRecordByID();
-        mockDisplayMostRecentRecordByTime();
         retrieveProgressValues();
         setProgressBars();
 
@@ -174,10 +170,10 @@ public class StatsFragment extends Fragment {
     public void mockSetProgressBars(){
         Log.d(TAG, "Called mockSetProgressBars()");
 
-        mProgressVeg.setProgress(mockProgressStatusVeg);
-        mProgressGrains.setProgress(mockProgressStatusGrains);
-        mProgressMilk.setProgress(mockProgressStatusMilk);
-        mProgressMeat.setProgress(mockProgressStatusMeat);
+        mProgressBarVeg.setProgress(mockProgressStatusVeg);
+        mProgressBarGrains.setProgress(mockProgressStatusGrains);
+        mProgressBarMilk.setProgress(mockProgressStatusMilk);
+        mProgressBarMeat.setProgress(mockProgressStatusMeat);
     }
 
     /**
@@ -274,9 +270,9 @@ public class StatsFragment extends Fragment {
     public void setProgressBars(){
         Log.d(TAG, "Called setProgressBars()");
 
-        mProgressVeg.setProgress(mProgressStatusVeg);
-        mProgressGrains.setProgress(mProgressStatusGrains);
-        mProgressMilk.setProgress(mProgressStatusMilk);
-        mProgressMeat.setProgress(mProgressStatusMeat);
+        mProgressBarVeg.setProgress(mProgressStatusVeg);
+        mProgressBarGrains.setProgress(mProgressStatusGrains);
+        mProgressBarMilk.setProgress(mProgressStatusMilk);
+        mProgressBarMeat.setProgress(mProgressStatusMeat);
     }
 }

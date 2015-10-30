@@ -43,8 +43,6 @@ public class DiaryFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "User clicked the Add button");
-                mockAddNewRecord();
-                mockDisplayRecord();
                 addNewRecord();
             }
         });
