@@ -23,6 +23,11 @@ public class StatsFragment extends Fragment {
     private ProgressBar mProgressMilk;
     private ProgressBar mProgressMeat;
 
+    private int mProgressStatusVeg = 0;
+    private int mProgressStatusGrains = 0;
+    private int mProgressStatusMilk = 0;
+    private int mProgressStatusMeat = 0;
+
     // Mock values
     private int mockProgressStatusVeg = 50;
     private int mockProgressStatusGrains = 60;
@@ -53,13 +58,13 @@ public class StatsFragment extends Fragment {
         mProgressMilk.setProgress(mockProgressStatusMilk);
         mProgressMeat.setProgress(mockProgressStatusMeat);
 
-        /*
         mockStatsDisplayInLog();
         mockRetrieveProgressValues();
-        setProgressBars();
+        mockSetProgressBars();
         mockDisplayMostRecentRecordByID();
         mockDisplayMostRecentRecordByTime();
-        */
+        retrieveProgressValues();
+        setProgressBars();
 
         return rootView;
     }
@@ -164,10 +169,10 @@ public class StatsFragment extends Fragment {
     }
 
     /**
-     * Set values of all progress bars.
+     * Set mock values of all progress bars.
      */
-    public void setProgressBars(){
-        Log.d(TAG, "Called setProgressBars()");
+    public void mockSetProgressBars(){
+        Log.d(TAG, "Called mockSetProgressBars()");
 
         mProgressVeg.setProgress(mockProgressStatusVeg);
         mProgressGrains.setProgress(mockProgressStatusGrains);
@@ -214,5 +219,64 @@ public class StatsFragment extends Fragment {
         Log.d(TAG, "Record's date as time since epoch: " + millis);
         Date dateCreated = new Date(millis);
         Log.d(TAG, "Record's date: " + dateCreated.toString());
+    }
+
+    /**
+     * Retrieves progress values from the most recent entry in the database
+     * and passes those values to setProgressValues().
+     */
+    public void retrieveProgressValues(){
+        Log.i(TAG, "Called retrieveProgressValues()");
+
+        int id;
+        double veg, grains, milk, meat;
+
+        Cursor cursor = mDbStatsHelper.fetchRecordWithMaxRowId();
+        id = cursor.getInt(cursor.getColumnIndex(NutritionDbHelper.KEY_ROWID));
+        veg = cursor.getDouble(cursor.getColumnIndex(NutritionDbHelper.KEY_VEG));
+        grains = cursor.getDouble(cursor.getColumnIndex(NutritionDbHelper.KEY_GRAIN));
+        milk = cursor.getDouble(cursor.getColumnIndex(NutritionDbHelper.KEY_MILK));
+        meat = cursor.getDouble(cursor.getColumnIndex(NutritionDbHelper.KEY_MEAT));
+        setProgressValues(veg, grains, milk, meat);
+
+        Log.d(TAG, "Retrieved progress values from the record with ID: " + id);
+    }
+
+
+    /**
+     * Sets progress bars' values by computing corresponding percentages
+     * of consumed food servings with respect to the recommended daily amount
+     * of food serving for each food group (as defined by the MAX_..._SERVINGS constants).
+     * @param veg number of vegetables servings
+     * @param grains number of grains servings
+     * @param milk number of milk servings
+     * @param meat number of meat servings
+     */
+    private void setProgressValues(double veg, double grains, double milk, double meat){
+        Log.d(TAG, "Called setProgressValues()");
+
+        double vegPercent = veg / MAX_VEG_SERVINGS * 100;
+        double grainsPercent = grains / MAX_GRAINS_SERVINGS * 100;
+        double milkPercent = milk / MAX_MILK_SERVINGS * 100;
+        double meatPercent = meat / MAX_MEAT_SERVINGS * 100;
+
+        Log.d(TAG, "Percentages: veg " + vegPercent + " grains " + grainsPercent + " milk " + milkPercent + " meat "+ meatPercent);
+
+        this.mProgressStatusVeg = (int) vegPercent; // take the integer part of the percentage
+        this.mProgressStatusGrains = (int) grainsPercent;
+        this.mProgressStatusMilk = (int) milkPercent;
+        this.mProgressStatusMeat = (int) meatPercent;
+    }
+
+    /**
+     * Set values of all progress bars.
+     */
+    public void setProgressBars(){
+        Log.d(TAG, "Called setProgressBars()");
+
+        mProgressVeg.setProgress(mProgressStatusVeg);
+        mProgressGrains.setProgress(mProgressStatusGrains);
+        mProgressMilk.setProgress(mProgressStatusMilk);
+        mProgressMeat.setProgress(mProgressStatusMeat);
     }
 }
