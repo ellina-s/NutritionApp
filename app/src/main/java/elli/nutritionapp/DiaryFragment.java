@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import java.util.Random;
 
@@ -20,12 +21,21 @@ public class DiaryFragment extends Fragment {
 
     private static final String TAG = "Diary";
     private NutritionDbHelper mDbHelper;
+    private EditText mVegEditText;
+    private EditText mGrainEditText;
+    private EditText mMilkEditText;
+    private EditText mMeatEditText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_diary, container, false);
+
+        mVegEditText = (EditText) rootView.findViewById(R.id.vegEditText);
+        mGrainEditText = (EditText) rootView.findViewById(R.id.grainsEditText);
+        mMilkEditText = (EditText) rootView.findViewById(R.id.milkEditText);
+        mMeatEditText = (EditText) rootView.findViewById(R.id.meatEditText);
 
         Button button = (Button) rootView.findViewById(R.id.addButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -35,6 +45,7 @@ public class DiaryFragment extends Fragment {
                 Log.d(TAG, "User clicked the Add button");
                 mockAddNewRecord();
                 mockDisplayRecord();
+                addNewRecord();
             }
         });
 
@@ -68,15 +79,7 @@ public class DiaryFragment extends Fragment {
     private void mockAddNewRecord(){
 
         Log.d(TAG, "called mockAddNewRecord()");
-
-        // Generate a pseudorandom date
-        Random rand = new Random();
-        int randomDay = rand.nextInt(31) + 1;
-        int randomMonth = rand.nextInt(12) + 1;
-        int randomDate = randomMonth*1000000 + randomDay*10000 + 2015;
-        Log.d(TAG, "random date is " + randomDate);
-
-        mDbHelper.createRecord(5, 6, 1, 2, randomDate);
+        mDbHelper.createRecord(5, 6, 1, 2);
     }
 
     /**
@@ -99,6 +102,21 @@ public class DiaryFragment extends Fragment {
                 cursor.moveToNext();
             }
         }
+    }
+
+    /**
+     * Records user input in the database.
+     */
+    public void addNewRecord(){
+        Log.d(TAG, "called addNewRecord()");
+
+        double veg = Double.parseDouble(mVegEditText.getText().toString());
+        double grain = Double.parseDouble(mGrainEditText.getText().toString());
+        double milk = Double.parseDouble(mMilkEditText.getText().toString());
+        double meat = Double.parseDouble(mMeatEditText.getText().toString());
+
+        Log.d(TAG, "Veggies: " + veg + " grains: " + grain + " milk: " + milk + " meat: " + meat);
+        mDbHelper.createRecord(veg, grain, milk, meat);
     }
 
 }

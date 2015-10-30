@@ -34,10 +34,10 @@ public class NutritionDbHelper {
 
     private static final String DATABASE_CREATE =
             "create table servings (_id integer primary key autoincrement, "
-                    + KEY_VEG + " integer, "
-                    + KEY_GRAIN + " integer, "
-                    + KEY_MILK + " integer, "
-                    + KEY_MEAT + " integer, "
+                    + KEY_VEG + " real, "
+                    + KEY_GRAIN + " real, "
+                    + KEY_MILK + " real, "
+                    + KEY_MEAT + " real, "
                     + KEY_DATE + " DATE DEFAULT CURRENT_DATE);";
 
     private final Context mContext;
@@ -96,16 +96,14 @@ public class NutritionDbHelper {
      * @param grain number of servings of grains
      * @param milk number of servings of milk and alternatives
      * @param meat number of servings of meat and alternatives
-     * @param date date on which food servings are consumed
      * @return row Id or -1 if failed
      */
-    public long createRecord(int veg, int grain, int milk, int meat, int date) {
+    public long createRecord(double veg, double grain, double milk, double meat) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_VEG, veg);
         initialValues.put(KEY_GRAIN, grain);
         initialValues.put(KEY_MILK, milk);
         initialValues.put(KEY_MEAT, meat);
-        initialValues.put(KEY_DATE, date);
 
         return mDatabase.insert(DATABASE_TABLE, null, initialValues);
     }

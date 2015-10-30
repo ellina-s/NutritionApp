@@ -28,6 +28,7 @@ public class StatsFragment extends Fragment {
     private int mockProgressStatusGrains = 60;
     private int mockProgressStatusMilk = 40;
     private int mockProgressStatusMeat = 90;
+    private static final int MOCK_TIMESTAMP_ROWID = 1;
 
     private NutritionDbHelper mDbStatsHelper;
     private static final String TAG = "Stats";
@@ -52,10 +53,13 @@ public class StatsFragment extends Fragment {
         mProgressMilk.setProgress(mockProgressStatusMilk);
         mProgressMeat.setProgress(mockProgressStatusMeat);
 
+        /*
         mockStatsDisplayInLog();
         mockRetrieveProgressValues();
         setProgressBars();
         mockDisplayMostRecentRecordByID();
+        mockDisplayMostRecentRecordByTime();
+        */
 
         return rootView;
     }
