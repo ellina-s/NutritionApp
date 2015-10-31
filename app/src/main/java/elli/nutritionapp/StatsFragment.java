@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.Date;
 
@@ -58,9 +59,19 @@ public class StatsFragment extends Fragment {
         mProgressBarMilk.setProgress(mProgressStatusMilk);
         mProgressBarMeat.setProgress(mProgressStatusMeat);
 
-        mockStatsDisplayInLog();
-        retrieveProgressValues();
-        setProgressBars();
+        TextView tv = (TextView) rootView.findViewById(R.id.debuggingMessageTextView);
+
+        boolean tableIsEmpty = mDbStatsHelper.isTableEmpty();
+        if(tableIsEmpty == true){
+            Log.d(TAG, "Table is empty.");
+            tv.setText("No data to display");
+        }
+        else{
+            Log.d(TAG, "Table is not empty. Proceeding further...");
+            mockStatsDisplayInLog();
+            retrieveProgressValues();
+            setProgressBars();
+        }
 
         return rootView;
     }

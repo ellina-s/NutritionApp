@@ -196,6 +196,7 @@ public class NutritionDbHelper {
     }
 
     /**
+     * Checks if DATABASE_TABLE is empty.
      * Reference: http://stackoverflow.com/questions/4397757/how-can-i-check-to-see-if-my-sqlite-table-has-data-in-it
      * @return True, if the table is empty. Otherwise, false.
      */
@@ -205,6 +206,8 @@ public class NutritionDbHelper {
 
         Cursor cur = mDatabase.rawQuery("SELECT COUNT(*) FROM " + DATABASE_TABLE, null);
         if (cur != null){
+            cur.moveToFirst();
+            if (cur.getInt (0) == 0){
                 isEmpty = true;
                 Log.d(TAG, "Table is empty.");
             }
