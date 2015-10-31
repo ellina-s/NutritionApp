@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Database helper class. Creates a database and respective table(s)
@@ -43,6 +44,7 @@ public class NutritionDbHelper {
     private final Context mContext;
     private AppDbHelper mAppDbHelper;
     private SQLiteDatabase mDatabase;
+    private static final String TAG = "Database Helper";
 
     /**
      * An implementation of the SQLiteOpenHelper class
@@ -191,6 +193,23 @@ public class NutritionDbHelper {
             cursor.moveToFirst();
         }
         return cursor;
+    }
+
+    /**
+     * Reference: http://stackoverflow.com/questions/4397757/how-can-i-check-to-see-if-my-sqlite-table-has-data-in-it
+     * @return True, if the table is empty. Otherwise, false.
+     */
+    public boolean isTableEmpty(){
+        Log.d(TAG, "Called isTableEmpty()");
+        boolean isEmpty = false;
+
+        Cursor cur = mDatabase.rawQuery("SELECT COUNT(*) FROM " + DATABASE_TABLE, null);
+        if (cur != null){
+                isEmpty = true;
+                Log.d(TAG, "Table is empty.");
+            }
+        }
+        return isEmpty;
     }
 
 }
